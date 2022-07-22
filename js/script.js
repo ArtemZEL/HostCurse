@@ -271,14 +271,4 @@ window.addEventListener('DOMContentLoaded', function() {
 
         });
     }
-
-
-        
-
-
-
-
-
-
-
 });
