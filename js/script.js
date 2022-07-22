@@ -214,7 +214,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const forms=document.querySelectorAll('form');
 
     const message={
-        loading:'img/form/spinner.svg',
+        loading:'img/form/826.svg',
         succes:'Спасибо! Мы свяжемся с вами :)',
         failure:'Простите что не так...'
     };
@@ -223,13 +223,9 @@ window.addEventListener('DOMContentLoaded', function() {
         postData(item);
     });
 
-
-
-
     function postData(form){
         form.addEventListener('submit',(e)=>{
             e.preventDefault();
-
             const statusMessage=document.createElement('img');
             statusMessage.src = message.loading;
             statusMessage.style.cssText=`
