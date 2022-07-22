@@ -117,10 +117,10 @@ window.addEventListener('DOMContentLoaded', function() {
         clearInterval(modalTimerId);
     }
     
-    modalCloseBtn.addEventListener('click', closeModal);
+    
 
     modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
+        if (e.target === modal||e.target.getAttribute('data-close')=='') {
             closeModal();
         }
     });
@@ -131,7 +131,7 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // const modalTimerId = setTimeout(openModal, 3000);
+    const modalTimerId = setTimeout(openModal, 50000);
 
     function showModalByScroll() {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
@@ -214,7 +214,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const forms=document.querySelectorAll('form');
 
     const message={
-        loading:'Загрузка',
+        loading:'img/form/spinner.svg',
         succes:'Спасибо! Мы свяжемся с вами :)',
         failure:'Простите что не так...'
     };
@@ -230,10 +230,14 @@ window.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit',(e)=>{
             e.preventDefault();
 
-            const statusMessage=document.createElement('div');
-            statusMessage.classList.add('status');
-            statusMessage.textContent=message.loading;
-            form.append(statusMessage);
+            const statusMessage=document.createElement('img');
+            statusMessage.src = message.loading;
+            statusMessage.style.cssText=`
+                display:block;
+                margin: 0 auto;
+            `;
+            //form.append(statusMessage);
+            form.insertAdjacentElement('afterend',statusMessage);
 
             const request=new XMLHttpRequest();
             request.open('POST','Server.php');
@@ -248,8 +252,6 @@ window.addEventListener('DOMContentLoaded', function() {
                 object[key]=value;
             });
 
-
-
             const json=JSON.stringify(object);
 
             request.send(json);
@@ -257,18 +259,42 @@ window.addEventListener('DOMContentLoaded', function() {
             request.addEventListener('load',()=>{
                 if(request.status===200){
                     console.log(request.response);
-                    statusMessage.textContent=message.succes;
+                    showThancksModal(message.succes);
                     form.reset();
-                    setTimeout(()=>{
-                        statusMessage.remove();
-                    },2000);
+                    statusMessage.remove();
                 }
                 else
                 {
-                    statusMessage.textContent=message.failure;
+                    showThancksModal(message.failure);
                 }
             });
 
         });
     }
-});
+    function showThancksModal(message){
+        const prevMOdalDialog=document.querySelector('.modal__dialog'); 
+         
+        prevMOdalDialog.classList.add('hide');
+        openModal();
+
+        const thanksModal=document.createElement('div');
+        thanksModal.classList.add('modal__dialog');
+        thanksModal.innerHTML=`
+            <div class="modal__content">
+                <div class="modal__close" data-close>×</div>
+                <div class="modal__title">${message}</div>
+            </div>
+        `;
+        document.querySelector('.modal').append(thanksModal);
+        setTimeout(()=>{
+            thanksModal.remove();
+            prevMOdalDialog.classList.add('show');
+            prevMOdalDialog.classList.remove('hide');
+            closeModal();
+        },4000);
+    }   
+
+
+
+
+}); 
