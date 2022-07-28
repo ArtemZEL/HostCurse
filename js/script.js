@@ -389,50 +389,138 @@ window.addEventListener('DOMContentLoaded', function() {
     
     //Slider
     //1-метод создания слайдера простой но когда делал произошел сбой пришлось с инета брать
-    let slideIndex = 1;
-    const slides = document.querySelectorAll('.offer__slide'),
-        prev = document.querySelector('.offer__slider-prev'),
-        next = document.querySelector('.offer__slider-next'),
-        total = document.querySelector('#total'),
-        current = document.querySelector('#current');
+    //let slideIndex = 1;
+    // const slides = document.querySelectorAll('.offer__slide'),
+    //     prev = document.querySelector('.offer__slider-prev'),
+    //     next = document.querySelector('.offer__slider-next'),
+    //     total = document.querySelector('#total'),
+    //     current = document.querySelector('#current');
 
-    showSlides(slideIndex);
+    // showSlides(slideIndex);
+
+    // if (slides.length < 10) {
+    //     total.textContent = `0${slides.length}`;
+    // } else {
+    //     total.textContent = slides.length;
+    // }
+
+    // function showSlides(n) {
+    //     if (n > slides.length) {
+    //         slideIndex = 1;
+    //     }
+    //     if (n < 1) {
+    //         slideIndex = slides.length;
+    //     }
+
+    //     slides.forEach((item) => item.style.display = 'none');
+
+    //     slides[slideIndex - 1].style.display = 'block';
+        
+    //     if (slides.length < 10) {
+    //         current.textContent =  `0${slideIndex}`;
+    //     } else {
+    //         current.textContent =  slideIndex;
+    //     }
+    // }
+
+    // function plusSlides (n) {
+    //     showSlides(slideIndex += n);
+    // }
+
+    // prev.addEventListener('click', function(){
+    //     plusSlides(-1);
+    // });
+
+    // next.addEventListener('click', function(){
+    //     plusSlides(1);
+    // });
+    //2 способ
+    let slideIndex = 1;
+    let offset=0;
+    
+    const slides = document.querySelectorAll('.offer__slide'),
+    prev = document.querySelector('.offer__slider-prev'),
+    next = document.querySelector('.offer__slider-next'),
+    total = document.querySelector('#total'),
+    current = document.querySelector('#current'),
+    slideWrapper = document.querySelector('.offer__slider-wrapper'),
+    slideField = document.querySelector('.offer__slider-inner'),
+    width=window.getComputedStyle(slideWrapper).width;
 
     if (slides.length < 10) {
         total.textContent = `0${slides.length}`;
+        current.textContent=`0${slideIndex}`
     } else {
         total.textContent = slides.length;
+        current.textContent=slideIndex;
+
     }
+    slideField.style.width=100*slides.length+'%';
+    slideField.style.display='flex';
+    slideField.style.transition='0.5s all';
 
-    function showSlides(n) {
-        if (n > slides.length) {
-            slideIndex = 1;
-        }
-        if (n < 1) {
-            slideIndex = slides.length;
-        }
+    slideWrapper.style.overflow='hidden';
 
-        slides.forEach((item) => item.style.display = 'none');
 
-        slides[slideIndex - 1].style.display = 'block';
-        
-        if (slides.length < 10) {
-            current.textContent =  `0${slideIndex}`;
-        } else {
-            current.textContent =  slideIndex;
-        }
-    }
-
-    function plusSlides (n) {
-        showSlides(slideIndex += n);
-    }
-
-    prev.addEventListener('click', function(){
-        plusSlides(-1);
+    slides.forEach(slide=>{
+        slide.style.width=width;
     });
 
-    next.addEventListener('click', function(){
-        plusSlides(1);
+    next.addEventListener('click',()=>{
+        if(offset==+width.slice(0,width.length-2)*(slides.length-1)){
+            offset=0;
+        }
+        //500px
+        else{
+            offset+= +width.slice(0,width.length-2);
+        }
+
+        slideField.style.transform=`translateX(-${offset}px)`;
+        if(slideIndex==slides.length){
+            slideIndex=1;
+        }
+        else{
+            slideIndex++;
+        }
+      
+        if(slides.length<10)
+        {
+            current.textContent=`0${slideIndex}`;
+        }
+        else{
+            current.textContent=slideIndex;
+        }
+   
     });
-    //2 способ
+    prev.addEventListener('click',()=>{
+        if( offset==0){
+           
+            offset=+width.slice(0,width.length-2)*(slides.length-1)
+        }
+        //500px
+        else{
+            offset-= +width.slice(0,width.length-2);
+        }
+        slideField.style.transform=`translateX(-${offset}px)`;
+        slideField.style.transform=`translateX(-${offset}px)`;
+        if(slideIndex==1){
+            slideIndex=slides.length;
+        }
+        else{
+            slideIndex--;
+        }
+    
+    
+        if(slides.length<10)
+        {
+            current.textContent=`0${slideIndex}`;
+        }
+        else{
+            current.textContent=slideIndex;
+        }
+    
+    });
+
+
+
 });
