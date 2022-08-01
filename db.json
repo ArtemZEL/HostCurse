@@ -32,6 +32,26 @@
       "name": "sa",
       "phone": "+375447490312",
       "id": 2
+    },
+    {
+      "name": "Registration",
+      "phone": "+375447490312",
+      "id": 3
+    },
+    {
+      "name": "BurgerKing_test",
+      "phone": "+375447490312",
+      "id": 4
+    },
+    {
+      "name": "BurgerKing_test",
+      "phone": "+375447490312",
+      "id": 5
+    },
+    {
+      "name": "s",
+      "phone": "+375447490312",
+      "id": 6
     }
   ]
 }
